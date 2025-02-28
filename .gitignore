@@ -1,0 +1,8 @@
+*/__pycache__
+*/codewringer.egg-info
+
+config.yaml
+
+build/
+
+.venv/
