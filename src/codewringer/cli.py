@@ -1,4 +1,5 @@
 import click
+import subprocess
 from .analysis import analyze_file
 from .refactor import refactor_file
 
@@ -22,6 +23,22 @@ def refactor(file_path):
     result = refactor_file(file_path)
     click.echo("Refactoring Suggestions:")
     click.echo(result)
+
+@main.command()
+def git_status():
+    """Show the current Git status of the repository."""
+    try:
+        result = subprocess.run(
+            ["git", "status"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        click.echo("Git Status:")
+        click.echo(result.stdout)
+    except subprocess.CalledProcessError as e:
+        click.echo("Error running git status:")
+        click.echo(e.output)
 
 if __name__ == "__main__":
     main()

@@ -24,3 +24,12 @@ def test_refactor_command(tmp_path):
         text=True
     )
     assert "Refactoring Suggestions:" in result.stdout
+
+def test_git_status_command():
+    result = subprocess.run(
+        ["python", "-m", "codewringer.cli", "git_status"],
+        capture_output=True,
+        text=True
+    )
+    # Check if git status output contains expected text
+    assert "On branch" in result.stdout or "Not a git repository" in result.stdout
