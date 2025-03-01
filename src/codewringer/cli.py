@@ -40,5 +40,67 @@ def git_status():
         click.echo("Error running git status:")
         click.echo(e.output)
 
+@main.command()
+def git_diff():
+    """Show the Git diff for the repository."""
+    try:
+        result = subprocess.run(
+            ["git", "diff"],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        click.echo("Git Diff:")
+        click.echo(result.stdout)
+    except subprocess.CalledProcessError as e:
+        click.echo("Error running git diff:")
+        click.echo(e.output)
+
+@main.command()
+@click.argument("message")
+def git_commit(message):
+    """Commit changes to Git with a provided commit message."""
+    try:
+        result = subprocess.run(
+            ["git", "commit", "-am", message],
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        click.echo("Git Commit Output:")
+        click.echo(result.stdout)
+    except subprocess.CalledProcessError as e:
+        click.echo("Error running git commit:")
+        click.echo(e.output)
+
+@main.command()
+def configure():
+    """
+    Run the interactive configuration and installation process.
+    This re-runs the installer (main_install.py) to allow you to update your model selections and dependencies.
+    """
+    import sys
+    try:
+        subprocess.run([sys.executable, "main_install.py"], check=True)
+    except subprocess.CalledProcessError as e:
+        click.echo("Error during configuration:")
+        click.echo(e.output)
+
+@main.command()
+def diagnose():
+    """
+    Print the current configuration from config.yaml.
+    This helps in troubleshooting by displaying the chosen models and settings.
+    """
+    import os
+    import yaml
+    if os.path.exists("config.yaml"):
+        with open("config.yaml", "r") as f:
+            config = yaml.safe_load(f)
+        click.echo("Current configuration:")
+        click.echo(config)
+    else:
+        click.echo("No configuration file found (config.yaml).")
+
 if __name__ == "__main__":
     main()
