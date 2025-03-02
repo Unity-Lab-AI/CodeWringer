@@ -10,6 +10,7 @@ def run_cli_command(args):
         text=True
     )
 
+# Core analysis commands
 def test_analyze_command(tmp_path):
     code = "def hello():\n    print('Hello World')\n"
     file = tmp_path / "test.py"
@@ -24,18 +25,17 @@ def test_refactor_command(tmp_path):
     result = run_cli_command(["refactor", str(file)])
     assert "Refactoring Suggestions:" in result.stdout
 
+# Git commands
 def test_git_status_command():
     result = run_cli_command(["git_status"])
     assert "Git Status:" in result.stdout
 
 def test_git_diff_command():
     result = run_cli_command(["git_diff"])
-    # Diff might be empty; we check for successful execution.
     assert result.returncode == 0
 
 def test_git_commit_command():
     result = run_cli_command(["git_commit", "Test commit"])
-    # Depending on the repo state, check for commit output or message indicating nothing to commit.
     assert "Git Commit Output:" in result.stdout or "nothing to commit" in result.stdout.lower()
 
 def test_git_clone_placeholder():
@@ -66,10 +66,9 @@ def test_git_reset_placeholder():
     result = run_cli_command(["git_reset", "soft"])
     assert "Placeholder: git reset --soft" in result.stdout
 
+# Setup/Diagnostics commands
 def test_configure_command():
-    # We do not execute main_install.py in tests; just ensure the command runs.
     result = run_cli_command(["configure"])
-    # Since it might run the installer, we only check that the command completes.
     assert result.returncode in (0, 1)
 
 def test_diagnose_command(tmp_path):
@@ -88,5 +87,46 @@ def test_diagnose_command(tmp_path):
 
 def test_version_command():
     result = run_cli_command(["version"])
-    # Version command output might vary; ensure some text is returned.
     assert "CodeWringer version:" in result.stdout or "not found" in result.stdout
+
+# Testing & Development commands placeholders
+def test_run_tests_command():
+    result = run_cli_command(["run_tests"])
+    assert result.returncode in (0, 1)  # Depending on test suite state
+
+def test_lint_placeholder():
+    result = run_cli_command(["lint"])
+    assert "Placeholder: linting" in result.stdout
+
+def test_format_placeholder():
+    result = run_cli_command(["format"])
+    assert "Placeholder: code formatting" in result.stdout
+
+def test_debug_placeholder():
+    result = run_cli_command(["debug"])
+    assert "Placeholder: debug" in result.stdout
+
+def test_build_placeholder():
+    result = run_cli_command(["build"])
+    assert "Placeholder: build" in result.stdout
+
+def test_deploy_placeholder():
+    result = run_cli_command(["deploy"])
+    assert "Placeholder: deploy" in result.stdout
+
+def test_generate_placeholder():
+    result = run_cli_command(["generate"])
+    assert "Placeholder: generate" in result.stdout
+
+# Agent commands placeholders
+def test_agent_list_placeholder():
+    result = run_cli_command(["agent_list"])
+    assert "Placeholder: agent list" in result.stdout
+
+def test_agent_create_placeholder():
+    result = run_cli_command(["agent_create", "test_agent"])
+    assert "Placeholder: agent create" in result.stdout
+
+def test_agent_run_placeholder():
+    result = run_cli_command(["agent_run", "test_agent", "do something"])
+    assert "Placeholder: agent 'test_agent' run" in result.stdout
