@@ -1,0 +1,7 @@
+# requirements.txt
+ollama
+click
+requests
+beautifulsoup4
+html2text
+pyyaml
