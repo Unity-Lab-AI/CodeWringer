@@ -1,0 +1,16 @@
+# Model configurations
+manager_model: "llama3.2"
+coding_model: "qwen2.5-coder:14b-instruct-q4_K_M"
+research_model: "llama3.2"
+embedding_model: "bge-m3:latest"
+
+# Hardware settings
+use_gpu: true
+
+# Tool and agent limits
+tool_limit: 10  # Max tools per agent
+max_steps: 20   # Max steps for agent tasks
+
+# Logging
+log_file: "logs/codewringer.log"
+log_level: "INFO"

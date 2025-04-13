@@ -19,6 +19,7 @@ build/
 config.yaml
 *.json
 *.yaml
+!example-config.yaml
 
 # Editor files
 .vscode/
